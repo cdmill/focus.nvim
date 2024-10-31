@@ -5,10 +5,10 @@ M.win = nil
 --- @type FocusOptions
 M.opts = nil
 M.state = nil
-local active = false
+M.active = false
 
 function M.is_active()
-  return active
+  return M.active
 end
 
 function M.activate()
@@ -24,7 +24,7 @@ function M.activate()
 
     vim.opt[k] = v
   end
-  active = true
+  M.active = true
 end
 
 function M.deactivate()
@@ -32,7 +32,7 @@ function M.deactivate()
     for k, _ in pairs(M.opts.zen) do
       vim.opt[k] = M.state[k]
     end
-    active = false
+    M.active = false
   end
 end
 

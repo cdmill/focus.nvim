@@ -2,10 +2,10 @@ local util = require("focus.util")
 local M = {}
 M.state = {}
 M.area = {}
-local active = false
+M.active = false
 
 function M.is_active()
-  return active
+  return M.active
 end
 
 function M.on_open()
@@ -70,13 +70,13 @@ function M.focus(hd, tl)
   vim.cmd("normal! zz")
   vim.wo.fillchars = (vim.o.fillchars ~= "" and vim.o.fillchars .. "," or "")
     .. "fold: "
-  active = true
+  M.active = true
 end
 
 function M.unfocus()
   M.on_close()
   vim.cmd("normal! zE")
-  active = false
+  M.active = false
 end
 
 function M.toggle()
