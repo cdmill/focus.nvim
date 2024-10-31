@@ -29,7 +29,7 @@ Distraction-free coding for Neovim >= 0.5. A fork of Folke's
 ### 🔎 Narrow mode
 
 - activated by entering **FOCUS** with a range or selection of lines
-- uses some simple folding 🪄 *magic* to hide all but the selected lines
+- uses some simple folding *magic* 🪄 to hide all but the selected lines
 
 ### 🧘 Zen mode
 
