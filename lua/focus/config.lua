@@ -13,7 +13,7 @@ local defaults = {
     width = 120, -- width of the focus window
     height = 1, -- height of the focus window
     -- by default, no options are changed in for the focus window
-    -- uncomment any of the options below, or add other vim.wo options you want to apply
+    -- add any vim.wo options you want to apply
     options = {},
   },
   auto_zen = false, -- auto enable zen mode when entering focus mode
