@@ -31,23 +31,14 @@ function M.options(state, disable, opts)
   end
 end
 
-function M.zen(state, disable, opts, winnr)
+function M.twilight(state, disable)
   if disable then
-    for name, val in pairs(opts) do
-      local opt = vim.fn.getwinvar(winnr, "&" .. name)
-      state[name] = (
-        (type(opt) == "number" and type(opts[name]) ~= "number")
-          and (opt == 1 and true or false)
-        or opt
-      )
-      vim.opt[name] = val
-    end
-    require("lualine").hide({ unhide = false, place = { "statusline", "tabline" } })
+    state.enabled = require("twilight.view").enabled
+    require("twilight").enable()
   else
-    for name, _ in pairs(opts) do
-      vim.opt[name] = state[name]
+    if not state.enabled then
+      require("twilight").disable()
     end
-    require("lualine").hide({ unhide = true, place = { "statusline", "tabline" } })
   end
 end
 

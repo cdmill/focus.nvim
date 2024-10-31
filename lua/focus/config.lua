@@ -14,21 +14,31 @@ local defaults = {
     height = 1, -- height of the focus window
     -- by default, no options are changed in for the focus window
     -- uncomment any of the options below, or add other vim.wo options you want to apply
-    options = {
-      -- signcolumn = "no", -- disable signcolumn
-      -- number = false, -- disable number column
-      -- relativenumber = false, -- disable relative numbers
-      -- cursorline = false, -- disable cursorline
-      -- cursorcolumn = false, -- disable cursor column
-      -- foldcolumn = "0", -- disable fold column
-      -- list = false, -- disable whitespace characters
-    },
+    options = {},
+  },
+  auto_zen = false, -- auto enable zen mode when entering focus mode
+  -- by default, the options below are disabled for zen mode
+  zen = {
+    signcolumn = "no", -- disable signcolumn
+    number = false, -- disable number column
+    relativenumber = false, -- disable relative numbers
+    cursorline = false, -- disable cursorline
+    foldcolumn = "0", -- disable fold column
+    statuscolumn = " ", -- disbale status column
+    laststatus = 0, -- disable statusline
+    cmdheight = 0, -- disable cmdline
   },
   plugins = {
-    gitsigns = { enabled = false }, -- disables git signs
-    tmux = { enabled = false }, -- disables the tmux statusline
-    diagnostics = { enabled = false }, -- disables diagnostics
-    todo = { enabled = false }, -- if set to "true", todo-comments.nvim highlights will be disabled
+    -- comment the lines to not apply the options
+    -- options = {
+    --   disable some global vim options (vim.o...) e.g.
+    --   ruler = false
+    -- },
+    -- twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
+    -- gitsigns = { enabled = false }, -- disables git signs
+    -- tmux = { enabled = false }, -- disables the tmux statusline
+    -- diagnostics = { enabled = false }, -- disables diagnostics
+    -- todo = { enabled = false }, -- if set to "true", todo-comments.nvim highlights will be disabled
   },
   -- callback where you can add custom code when the focus window opens
   on_open = function(_win) end,
@@ -64,7 +74,11 @@ function M.setup(options)
       M.options.plugins[plugin].enabled = true
     end
   end
-  vim.api.nvim_create_user_command("Focus", require("focus").toggle, { nargs = "*" })
+  vim.api.nvim_create_user_command(
+    "Focus",
+    require("focus").toggle,
+    { range = 2, nargs = "*" }
+  )
   vim.api.nvim_create_user_command("Zen", require("focus").toggle_zen, { nargs = 0 })
 end
 

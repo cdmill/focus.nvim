@@ -8,9 +8,13 @@ end
 
 function M.set_hl(group, color)
   if color.link then
-    vim.api.nvim_set_hl(0, group, {
-      link = color.link,
-    })
+    if color.force then
+      vim.cmd("highlight! link " .. group .. " " .. color.link)
+    else
+      vim.api.nvim_set_hl(0, group, {
+        link = color.link,
+      })
+    end
   else
     if color.style then
       for _, style in ipairs(color.style) do
