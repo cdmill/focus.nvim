@@ -19,14 +19,17 @@ local defaults = {
   auto_zen = false, -- auto enable zen mode when entering focus mode
   -- by default, the options below are disabled for zen mode
   zen = {
-    signcolumn = "no", -- disable signcolumn
-    number = false, -- disable number column
-    relativenumber = false, -- disable relative numbers
-    cursorline = false, -- disable cursorline
-    foldcolumn = "0", -- disable fold column
-    statuscolumn = " ", -- disbale status column
-    laststatus = 0, -- disable statusline
-    cmdheight = 0, -- disable cmdline
+    opts = {
+      signcolumn = "no", -- disable signcolumn
+      number = false, -- disable number column
+      relativenumber = false, -- disable relative numbers
+      cursorline = false, -- disable cursorline
+      foldcolumn = "0", -- disable fold column
+      statuscolumn = " ", -- disbale status column
+      laststatus = 0, -- disable statusline
+      cmdheight = 0, -- disable cmdline
+    },
+    diagnostics = false,
   },
   plugins = {
     -- comment the lines to not apply the options
@@ -80,6 +83,11 @@ function M.setup(options)
     { range = 2, nargs = "*" }
   )
   vim.api.nvim_create_user_command("Zen", require("focus").toggle_zen, { nargs = 0 })
+  vim.api.nvim_create_user_command(
+    "Narrow",
+    require("focus").toggle_narrow,
+    { range = 2, nargs = 0 }
+  )
 end
 
 return setmetatable(M, {
