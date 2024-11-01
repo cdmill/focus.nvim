@@ -1,20 +1,23 @@
 local util = require("focus.util")
 local M = {}
 M.state = {}
-M.area = {}
+M.range = {}
 M.active = false
 
 function M.is_active()
   return M.active
 end
 
+function M.can_toggle()
+  return M.range.head ~= nil and M.range.tail ~= nil
+end
+
 function M.on_open()
   M.state["opts"] = {
-    foldenable = vim.wo.foldenable,
-    foldmethod = vim.wo.foldmethod,
-    foldminlines = vim.wo.foldminlines,
-    foldtext = vim.wo.foldtext,
-    fillchars = vim.wo.fillchars,
+    foldenable = vim.o.foldenable,
+    foldmethod = vim.o.foldmethod,
+    foldminlines = vim.o.foldminlines,
+    foldtext = vim.o.foldtext,
   }
   M.state["hl"] = {
     Folded = util.get_hl("Folded"),
@@ -34,6 +37,8 @@ function M.foldtext()
   return ""
 end
 
+---@param line number
+---@param mode string
 function M.normalize(line, mode)
   local pline = (
     mode == "head" and vim.fn.foldclosed(line) or vim.fn.foldclosedend(line)
@@ -42,10 +47,12 @@ function M.normalize(line, mode)
 end
 
 function M.focus(hd, tl)
-  M.area = { head = hd, tail = tl }
+  if hd and tl then
+    M.range = { head = hd, tail = tl }
+  end
   M.on_open()
-  local head = M.normalize(hd, "head")
-  local tail = M.normalize(tl, "tail")
+  local head = M.normalize(M.range.head, "head")
+  local tail = M.normalize(M.range.tail, "tail")
   local curr_pos = vim.fn.getpos(".")
 
   local bg = util.get_hl("Normal").bg or "NONE"
@@ -68,22 +75,28 @@ function M.focus(hd, tl)
   vim.wo.foldtext = "v:lua.require('focus.views.narrow').foldtext()"
   vim.fn.setpos(".", curr_pos)
   vim.cmd("normal! zz")
-  vim.wo.fillchars = (vim.o.fillchars ~= "" and vim.o.fillchars .. "," or "")
-    .. "fold: "
   M.active = true
 end
 
 function M.unfocus()
-  M.on_close()
   vim.cmd("normal! zE")
+  M.on_close()
   M.active = false
 end
 
-function M.toggle()
+---@param opts table
+function M.toggle(opts)
   if M.is_active() then
     M.unfocus()
+    if opts.line1 ~= opts.line2 then
+      M.focus(opts.line1, opts.line2)
+    end
   else
-    M.focus()
+    if opts.line1 ~= opts.line2 then
+      M.focus(opts.line1, opts.line2)
+    else
+      util.warn("Please provide a range to activate narrow focus")
+    end
   end
 end
 

@@ -12,7 +12,6 @@ M.win = nil
 --- @type FocusOptions
 M.opts = nil
 M.state = {}
-M.closed = false
 
 function M.is_open()
   return M.win and vim.api.nvim_win_is_valid(M.win)
@@ -85,7 +84,11 @@ end
 ---@param opts table
 function M.toggle(opts)
   if M.is_open() then
-    M.close()
+    if opts.line1 ~= opts.line2 then
+      M.open(opts)
+    else
+      M.close()
+    end
   else
     M.open(opts)
   end
