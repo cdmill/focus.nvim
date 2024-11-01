@@ -1,8 +1,8 @@
 # 🙇 FOCUS.nvim
 
 Distraction-free coding for Neovim >= 0.5. A fork of Folke's
-[zen-mode](https://github.com/folke/zen-mode.nvim/tree/main) with features inspired by
-[true-zen](https://github.com/pocco81/true-zen.nvim/tree/main).
+[Zen Mode](https://github.com/folke/zen-mode.nvim/tree/main) with features inspired by
+[True Zen](https://github.com/pocco81/true-zen.nvim/tree/main).
 
 ![image](https://user-images.githubusercontent.com/292349/118454007-b7d8c900-b6ac-11eb-8263-015a8d929644.png)
 
@@ -10,32 +10,38 @@ Distraction-free coding for Neovim >= 0.5. A fork of Folke's
 
 3 modes: **FOCUS**, **NARROW**, and **ZEN**
 
+ANY combination of **FOCUS**, **NARROW**, and **ZEN** can be activated at a time---
+they work seamlessly together!
+
 ### 🙇 Focus mode
 
 - opens the current buffer in a new full-screen floating window
 - doesn't mess with existing window layouts / splits
 - works correctly with other floating windows, like LSP hover, WhichKey, ...
 - you can dynamically change the window size
-- realigns when the editor or Zen window is resized
-- optionally shade the backdrop of the Zen window
+- realigns when the editor or Focus window is resized
+- optionally shade the backdrop of the Focus window
 - highly customizable with lua callbacks `on_open`, `on_close`
-- plugins:
+- plugins (optional):
   - disable gitsigns
   - hide [tmux](https://github.com/tmux/tmux) status line
+  - disable diagnostics
+  - disable todo
 - **FOCUS** is automatically closed when a new non-floating window is opened
 - works well with plugins like [Telescope](https://github.com/nvim-telescope/telescope.nvim) to open a new buffer inside the Focus window
 - close the Focus window with `:Focus`, `:close` or `:quit`
 
 ### 🔎 Narrow mode
 
-- activated by entering **FOCUS** with a range or selection of lines
 - uses some simple folding *magic* 🪄 to hide all but the selected lines
+- activated by calling `:Narrow` with a range or selection of lines
+- can be activated together with **FOCUS** by calling `:FOCUS` with a range or selection of lines
+- can be repeatedly called with smaller selections to narrow focus further
 
 ### 🧘 Zen mode
 
 - hides distractions (statusline, statuscolumn, etc.)
 - optionally hide diagnostics
-- works seamlessly with **FOCUS** and **NARROW**
 
 ## ⚡️ Requirements
 
@@ -51,7 +57,7 @@ Install the plugin with your preferred package manager:
 -- Lua
 {
   "cdmill/focus.nvim",
-  cmd = { "Focus", "Zen" },
+  cmd = { "Focus", "Zen", "Narrow" },
   opts = {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -82,14 +88,17 @@ Install the plugin with your preferred package manager:
   auto_zen = false, -- auto enable zen mode when entering focus mode
   -- by default, the options below are disabled for zen mode
   zen = {
-    signcolumn = "no", -- disable signcolumn
-    number = false, -- disable number column
-    relativenumber = false, -- disable relative numbers
-    cursorline = false, -- disable cursorline
-    foldcolumn = "0", -- disable fold column
-    statuscolumn = " ", -- disbale status column
-    laststatus = 0, -- disable statusline
-    cmdheight = 0, -- disable cmdline
+    opts = {
+      signcolumn = "no", -- disable signcolumn
+      number = false, -- disable number column
+      relativenumber = false, -- disable relative numbers
+      cursorline = false, -- disable cursorline
+      foldcolumn = "0", -- disable fold column
+      statuscolumn = " ", -- disbale status column
+      laststatus = 0, -- disable statusline
+      cmdheight = 0, -- disable cmdline
+    },
+    diagnostics = false, -- disables diagnostics
   },
   plugins = {
     -- uncomment the lines to not apply the options
@@ -112,11 +121,12 @@ Install the plugin with your preferred package manager:
 
 ## 🚀 Usage
 
-Toggle **FOCUS** mode with `:Focus`.
-Toggle **NARROW** mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after visual selecting lines)
-Toggle **ZEN** mode with `:Zen`.
+- Toggle **FOCUS** mode with `:Focus`.
+- Toggle **NARROW** mode with `:'<,'>Narrow`. (e.g. by typing `:Narrow` after visual selecting lines)
+- Toggle **NARROW** and **FOCUS** mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after visual selecting lines)
+- Toggle **ZEN** mode with `:Zen`.
 
-Alternatively you can start **FOCUS** or **ZEN** mode with the `Lua` API and pass any additional options:
+Alternatively you can start any of **FOCUS**, **ZEN**, or **NARROW** mode with the `Lua` API and pass any additional options:
 
 ```lua
 require("focus").toggle({
@@ -129,6 +139,10 @@ require("focus").toggle_zen({
     number = true, -- enable number column
     relativenumber = true, -- enable relative numbers
   }
+})
+require("focus").toggle_narrow({
+  line1 = beginning line number,
+  line2 = ending line number
 })
 ```
 
