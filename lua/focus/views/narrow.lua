@@ -25,11 +25,15 @@ function M.on_open()
 end
 
 function M.on_close()
-  for k, v in pairs(M.state["opts"]) do
-    vim.opt[k] = v
+  if not M.is_active() then
+    return
   end
-  for k, v in pairs(M.state["hl"]) do
-    util.set_hl(k, v)
+
+  for key, value in pairs(M.state["opts"]) do
+    vim.opt[key] = value
+  end
+  for key, value in pairs(M.state["hl"]) do
+    util.set_hl(key, value)
   end
 end
 
@@ -37,8 +41,11 @@ function M.foldtext()
   return ""
 end
 
+--- If the starting or ending line of narrow is a fold, returns the line number of the
+--- first/last line in that fold. Otherwise, returns the original line number
 ---@param line number
 ---@param mode string
+---@return number
 function M.normalize(line, mode)
   local pline = (
     mode == "head" and vim.fn.foldclosed(line) or vim.fn.foldclosedend(line)
@@ -79,12 +86,14 @@ function M.focus(hd, tl)
 end
 
 function M.unfocus()
-  vim.cmd("normal! zE")
+  if vim.wo.foldmethod == "manual" then
+    vim.cmd("normal! zE")
+  end
   M.on_close()
   M.active = false
 end
 
----@param opts table
+---@param opts table options recieved from `nvim_create_user_command`
 function M.toggle(opts)
   if M.is_active() then
     M.unfocus()

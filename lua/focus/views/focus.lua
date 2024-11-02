@@ -13,10 +13,13 @@ M.win = nil
 M.opts = nil
 M.state = {}
 
+---@return boolean
 function M.is_open()
   return M.win and vim.api.nvim_win_is_valid(M.win)
 end
 
+--- Disables plugins/opts when entering focus mode. Saves the state before disabling
+--- to restore upon exiting focus mode
 function M.plugins_on_open()
   for name, opts in pairs(M.opts.plugins) do
     local plugin = plugins[name]
@@ -25,6 +28,7 @@ function M.plugins_on_open()
   end
 end
 
+--- Restores state to values before entering focus mode
 function M.plugins_on_close()
   for name, opts in pairs(M.opts.plugins) do
     if opts and opts.enabled then
@@ -34,6 +38,9 @@ function M.plugins_on_close()
   end
 end
 
+--- Closes focus mode and restores original state.
+--- NOTE: we are also disabling zen and narrow modes when exiting focus mode but maybe
+--- that decision should be left to the user---i.e. must explicitly exit narrow/zen mode
 function M.close()
   ---@diagnostic disable-next-line: param-type-mismatch
   pcall(vim.cmd, "autocmd! Focus")
@@ -68,10 +75,12 @@ function M.close()
       vim.api.nvim_set_current_win(M.parent)
     end
     zen.deactivate()
+    narrow.unfocus()
   end
 end
 
----@param opts table
+--- Opens a new focus mode window if one isn't already open
+---@param opts table options recieved from `nvim_create_user_command`
 function M.open(opts)
   if not M.is_open() then
     -- close any possible remnants from a previous session
@@ -81,7 +90,7 @@ function M.open(opts)
   end
 end
 
----@param opts table
+---@param opts table options recieved from `nvim_create_user_command`
 function M.toggle(opts)
   if M.is_open() then
     if opts.line1 ~= opts.line2 then
@@ -106,6 +115,7 @@ end
 
 ---@param max number
 ---@param value any
+---@return number
 function M.resolve(max, value)
   local ret = max
   if type(value) == "function" then
@@ -118,7 +128,9 @@ function M.resolve(max, value)
   return math.min(ret, max)
 end
 
+--- Constructs focus mode layout
 ---@param opts FocusOptions
+---@return table
 function M.layout(opts)
   local width = M.resolve(vim.o.columns, opts.window.width)
   local height = M.resolve(M.height(), opts.window.height)
@@ -188,7 +200,7 @@ function M.create(opts)
     M.bg_win = nil
     return
   end
-  M.fix_hl(M.bg_win, "FocusBg")
+  M.fix_hl(M.bg_win, true)
 
   local win_opts = vim.tbl_extend("keep", {
     relative = "editor",
@@ -199,10 +211,10 @@ function M.create(opts)
   local buf = vim.api.nvim_get_current_buf()
   M.win = vim.api.nvim_open_win(buf, true, win_opts)
   vim.cmd([[norm! zz]])
-  M.fix_hl(M.win)
+  M.fix_hl(M.win, false)
 
   for k, v in pairs(opts.window.options or {}) do
-    vim.api.nvim_set_option_value(k, v, { win = M.win })
+    vim.api.nvim_set_option_value(k, v, { scope = "local", win = M.win })
   end
 
   if type(opts.on_open) == "function" then
@@ -230,20 +242,29 @@ function M.create(opts)
 end
 
 ---@param win number
----@param normal? string
-function M.fix_hl(win, normal)
+---@param backdrop? boolean
+function M.fix_hl(win, backdrop)
   local cwin = vim.api.nvim_get_current_win()
-  if cwin ~= win then
-    vim.api.nvim_set_current_win(win)
+  vim.api.nvim_set_current_win(win)
+
+  local opts = {
+    winblend = 0,
+  }
+
+  if backdrop then
+    opts["winhighlight"] = "NormalFloat:FocusBg"
+  else
+    opts["winhighlight"] = "NormalFloat:Normal"
   end
-  normal = normal or "Normal"
-  vim.cmd("setlocal winhl=NormalFloat:" .. normal .. ",FloatBorder:FocusBorder")
-  vim.cmd("setlocal winblend=0")
-  vim.cmd([[setlocal fcs=eob:\ ,fold:\ ,vert:\]])
+
+  for name, value in pairs(opts) do
+    vim.api.nvim_set_option_value(name, value, { scope = "local", win = win })
+  end
   vim.api.nvim_set_current_win(cwin)
 end
 
 ---@param win number
+---@return boolean?
 function M.is_float(win)
   local opts = vim.api.nvim_win_get_config(win)
   return opts and opts.relative and opts.relative ~= ""
@@ -252,6 +273,10 @@ end
 function M.on_buf_win_enter()
   if vim.api.nvim_get_current_win() == M.win then
     M.fix_hl(M.win)
+    vim.api.nvim_win_set_buf(M.parent, vim.api.nvim_get_current_buf())
+    for k, v in pairs(M.opts.window.options or {}) do
+      vim.api.nvim_set_option_value(k, v, { win = M.win })
+    end
   end
 end
 
@@ -266,6 +291,7 @@ function M.on_win_enter()
       end
     end, 10)
   end
+  M.fix_hl(win)
 end
 
 return M
