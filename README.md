@@ -4,7 +4,15 @@ Distraction-free coding for Neovim >= 0.5. A fork of Folke's
 [Zen Mode](https://github.com/folke/zen-mode.nvim/tree/main) with features inspired by
 [True Zen](https://github.com/pocco81/true-zen.nvim/tree/main).
 
-![image](https://user-images.githubusercontent.com/292349/118454007-b7d8c900-b6ac-11eb-8263-015a8d929644.png)
+<img width="1802" alt="focus" src="https://github.com/user-attachments/assets/e8423579-d717-4c55-89f5-82069aa3c0d9">
+
+
+<details closed>
+<summary>Click to toggle demo</summary>
+
+https://github.com/user-attachments/assets/f7646fda-fb75-4df1-8266-56cd8eaefe25
+
+</details>
 
 ## ✨ Features
 
