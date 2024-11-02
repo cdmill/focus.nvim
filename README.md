@@ -13,7 +13,7 @@ Distraction-free coding for Neovim >= 0.5. A fork of Folke's
 ANY combination of **FOCUS**, **NARROW**, and **ZEN** can be activated at a time---
 they work seamlessly together!
 
-### 🙇 Focus mode
+### 🙇 FOCUS mode
 
 - opens the current buffer in a new full-screen floating window
 - doesn't mess with existing window layouts / splits
@@ -31,14 +31,16 @@ they work seamlessly together!
 - works well with plugins like [Telescope](https://github.com/nvim-telescope/telescope.nvim) to open a new buffer inside the Focus window
 - close the Focus window with `:Focus`, `:close` or `:quit`
 
-### 🔎 Narrow mode
+### 🔎 NARROW mode
 
 - uses some simple folding *magic* 🪄 to hide all but the selected lines
 - activated by calling `:Narrow` with a range or selection of lines
 - can be activated together with **FOCUS** by calling `:FOCUS` with a range or selection of lines
 - can be repeatedly called with smaller selections to narrow focus further
+- Note: because **NARROW** mode uses folds to hide unselected code, you will be unable
+  to fold lines unless you manually define them (see `:h fold-methods`)
 
-### 🧘 Zen mode
+### 🧘 ZEN mode
 
 - hides distractions (statusline, statuscolumn, etc.)
 - optionally hide diagnostics
@@ -68,7 +70,7 @@ Install the plugin with your preferred package manager:
 
 ## ⚙️ Configuration
 
-**FOCUS** comes with the following defaults:
+FOCUS.nvim comes with the following defaults:
 
 ```lua
 {
@@ -89,19 +91,19 @@ Install the plugin with your preferred package manager:
   -- by default, the options below are disabled for zen mode
   zen = {
     opts = {
-      signcolumn = "no", -- disable signcolumn
+      cmdheight = 0, -- disable cmdline
+      cursorline = false, -- disable cursorline
+      laststatus = 0, -- disable statusline
       number = false, -- disable number column
       relativenumber = false, -- disable relative numbers
-      cursorline = false, -- disable cursorline
       foldcolumn = "0", -- disable fold column
+      signcolumn = "no", -- disable signcolumn
       statuscolumn = " ", -- disbale status column
-      laststatus = 0, -- disable statusline
-      cmdheight = 0, -- disable cmdline
     },
     diagnostics = false, -- disables diagnostics
   },
   plugins = {
-    -- uncomment the lines to not apply the options
+    -- uncomment any of the lines below to disable that option in Focus mode
     -- options = {
     --   disable some global vim options (vim.o...) e.g.
     --   ruler = false
@@ -136,8 +138,11 @@ require("focus").toggle({
 })
 require("focus").toggle_zen({
   zen = {
-    number = true, -- enable number column
-    relativenumber = true, -- enable relative numbers
+    opts = {
+      number = true, -- enable number column
+      relativenumber = true, -- enable relative numbers
+      statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} " -- enable statuscolumn with specific configuration
+    }
   }
 })
 require("focus").toggle_narrow({

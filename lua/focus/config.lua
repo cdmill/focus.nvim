@@ -20,14 +20,14 @@ local defaults = {
   -- by default, the options below are disabled for zen mode
   zen = {
     opts = {
-      signcolumn = "no", -- disable signcolumn
+      cmdheight = 0, -- disable cmdline
+      cursorline = false, -- disable cursorline
+      laststatus = 0, -- disable statusline
       number = false, -- disable number column
       relativenumber = false, -- disable relative numbers
-      cursorline = false, -- disable cursorline
       foldcolumn = "0", -- disable fold column
+      signcolumn = "no", -- disable signcolumn
       statuscolumn = " ", -- disbale status column
-      laststatus = 0, -- disable statusline
-      cmdheight = 0, -- disable cmdline
     },
     diagnostics = false,
   },
