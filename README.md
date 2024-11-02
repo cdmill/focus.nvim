@@ -10,8 +10,7 @@ Distraction-free coding for Neovim >= 0.5. A fork of Folke's
 
 3 modes: **FOCUS**, **NARROW**, and **ZEN**
 
-ANY combination of **FOCUS**, **NARROW**, and **ZEN** can be activated at a time---
-they work seamlessly together!
+ANY combination of **FOCUS**, **NARROW**, and **ZEN** can be activated at a time -- they work seamlessly together!
 
 ### 🙇 FOCUS mode
 
