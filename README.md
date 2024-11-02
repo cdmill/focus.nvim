@@ -32,7 +32,7 @@ ANY combination of **FOCUS**, **NARROW**, and **ZEN** can be activated at a time
 
 ### 🔎 NARROW mode
 
-- uses some simple folding *magic* ✨ to hide all but the selected lines
+- uses some simple folding ✨ *magic* ✨ to hide all but the selected lines
 - activated by calling `:Narrow` with a range or selection of lines
 - can be activated together with **FOCUS** by calling `:FOCUS` with a range or selection of lines
 - can be repeatedly called with smaller selections to narrow focus further
