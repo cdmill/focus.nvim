@@ -3,7 +3,7 @@
 ==============================================================================
 Table of Contents                               *focus.nvim-table-of-contents*
 
-1. Introduction                                      	  	  |focus.nvim|
+1. Introduction                                      |focus.nvim-introduction|
 2. Features                                              |focus.nvim-features|
   - FOCUS mode                                |focus.nvim-features-focus-mode|
   - NARROW mode                              |focus.nvim-features-narrow-mode|
@@ -14,20 +14,19 @@ Table of Contents                               *focus.nvim-table-of-contents*
 6. Usage                                                    |focus.nvim-usage|
 
 ==============================================================================
-1. Introduction                                      	    	  *focus.nvim*
+1. Introduction                                      *focus.nvim-introduction*
 
-Distraction-free coding for Neovim >= 0.5. A fork of Folke’s Zen Mode
-<https://github.com/folke/zen-mode.nvim/tree/main> with features inspired by
-True Zen <https://github.com/pocco81/true-zen.nvim/tree/main>.
+Distraction-free coding for Neovim >= 0.5. A fork of Folke’s Zen Mode with
+features inspired by True Zen .
 
 
 ==============================================================================
 2. Features                                              *focus.nvim-features*
 
-3 modes: *FOCUS*, *NARROW*, and *ZEN*
+3 modes: FOCUS, NARROW, and ZEN
 
-ANY combination of *FOCUS*, *NARROW*, and *ZEN* can be activated at a
-time— they work seamlessly together!
+ANY combination of FOCUS, NARROW, and ZEN can be activated at a time— they
+work seamlessly together!
 
 
 FOCUS MODE                                    *focus.nvim-features-focus-mode*
@@ -44,7 +43,7 @@ FOCUS MODE                                    *focus.nvim-features-focus-mode*
     - hide tmux <https://github.com/tmux/tmux> status line
     - disable diagnostics
     - disable todo
-- *FOCUS* is automatically closed when a new non-floating window is opened
+- FOCUS is automatically closed when a new non-floating window is opened
 - works well with plugins like Telescope to open a new buffer inside the
   Focus window
 - close the Focus window with `:Focus`, `:close` or `:quit`
@@ -54,11 +53,11 @@ NARROW MODE                                  *focus.nvim-features-narrow-mode*
 
 - uses some simple folding _magic_ to hide all but the selected lines
 - activated by calling `:Narrow` with a range or selection of lines
-- can be activated together with *FOCUS* by calling `:FOCUS` with a range or
+- can be activated together with FOCUS by calling `:FOCUS` with a range or
   selection of lines
 - can be repeatedly called with smaller selections to narrow focus further
-- Note: because *NARROW* mode uses folds to hide unselected code, you will
-  be unable to fold lines unless you manually define them (see |fold-methods|)
+- Note: because NARROW mode uses folds to hide unselected code, you will be
+  unable to fold lines unless you manually define them (see |fold-methods|)
 
 
 ZEN MODE                                        *focus.nvim-features-zen-mode*
@@ -153,15 +152,15 @@ FOCUS.nvim comes with the following defaults:
 ==============================================================================
 6. Usage                                                    *focus.nvim-usage*
 
-- Toggle *FOCUS* mode with `:Focus`.
-- Toggle *NARROW* mode with `:'<,'>Narrow`. (e.g. by typing `:Narrow` after visual
+- Toggle FOCUS mode with `:Focus`.
+- Toggle NARROW mode with `:'<,'>Narrow`. (e.g. by typing `:Narrow` after visual
   selecting lines)
-- Toggle *NARROW* and *FOCUS* mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after
+- Toggle NARROW and FOCUS mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after
   visual selecting lines)
-- Toggle *ZEN* mode with `:Zen`.
+- Toggle ZEN mode with `:Zen`.
 
-Alternatively you can start any of *FOCUS*, *ZEN*, or *NARROW* mode with
-the `Lua` API and pass any additional options:
+Alternatively you can start any of FOCUS, ZEN, or NARROW mode with the `Lua`
+API and pass any additional options:
 
 >lua
     require("focus").toggle({
