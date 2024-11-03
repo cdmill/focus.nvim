@@ -1,20 +1,20 @@
-*focus.txt*                For 0.5               Last change: 2024 November 01
+*focus.nvim.txt*             For 0.5             Last change: 2024 November 02
 
 ==============================================================================
-Table of Contents                                    *focus-table-of-contents*
+Table of Contents                               *focus.nvim-table-of-contents*
 
-1. FOCUS.nvim                                               |focus-focus.nvim|
-2. Features                                                   |focus-features|
-  - FOCUS mode                                     |focus-features-focus-mode|
-  - NARROW mode                                   |focus-features-narrow-mode|
-  - ZEN mode                                         |focus-features-zen-mode|
-3. Requirements                                           |focus-requirements|
-4. Installation                                           |focus-installation|
-5. Configuration                                         |focus-configuration|
-6. Usage                                                         |focus-usage|
+1. Introduction                                      	  	  |focus.nvim|
+2. Features                                              |focus.nvim-features|
+  - FOCUS mode                                |focus.nvim-features-focus-mode|
+  - NARROW mode                              |focus.nvim-features-narrow-mode|
+  - ZEN mode                                    |focus.nvim-features-zen-mode|
+3. Requirements                                      |focus.nvim-requirements|
+4. Installation                                      |focus.nvim-installation|
+5. Configuration                                    |focus.nvim-configuration|
+6. Usage                                                    |focus.nvim-usage|
 
 ==============================================================================
-1. FOCUS.nvim                                               *focus-focus.nvim*
+1. Introduction                                      	    	  *focus.nvim*
 
 Distraction-free coding for Neovim >= 0.5. A fork of Folke’s Zen Mode
 <https://github.com/folke/zen-mode.nvim/tree/main> with features inspired by
@@ -22,7 +22,7 @@ True Zen <https://github.com/pocco81/true-zen.nvim/tree/main>.
 
 
 ==============================================================================
-2. Features                                                   *focus-features*
+2. Features                                              *focus.nvim-features*
 
 3 modes: *FOCUS*, *NARROW*, and *ZEN*
 
@@ -30,7 +30,7 @@ ANY combination of *FOCUS*, *NARROW*, and *ZEN* can be activated at a
 time— they work seamlessly together!
 
 
-FOCUS MODE                                         *focus-features-focus-mode*
+FOCUS MODE                                    *focus.nvim-features-focus-mode*
 
 - opens the current buffer in a new full-screen floating window
 - doesn’t mess with existing window layouts / splits
@@ -50,31 +50,31 @@ FOCUS MODE                                         *focus-features-focus-mode*
 - close the Focus window with `:Focus`, `:close` or `:quit`
 
 
-NARROW MODE                                       *focus-features-narrow-mode*
+NARROW MODE                                  *focus.nvim-features-narrow-mode*
 
 - uses some simple folding _magic_ to hide all but the selected lines
 - activated by calling `:Narrow` with a range or selection of lines
 - can be activated together with *FOCUS* by calling `:FOCUS` with a range or
   selection of lines
 - can be repeatedly called with smaller selections to narrow focus further
-- Note: because *NARROW* mode uses folds to hide unselected code, you will be
-  unable to fold lines unless you manually define them (see |fold-methods|)
+- Note: because *NARROW* mode uses folds to hide unselected code, you will
+  be unable to fold lines unless you manually define them (see |fold-methods|)
 
 
-ZEN MODE                                             *focus-features-zen-mode*
+ZEN MODE                                        *focus.nvim-features-zen-mode*
 
 - hides distractions (statusline, statuscolumn, etc.)
 - optionally hide diagnostics
 
 
 ==============================================================================
-3. Requirements                                           *focus-requirements*
+3. Requirements                                      *focus.nvim-requirements*
 
 - Neovim >= 0.5.0
 
 
 ==============================================================================
-4. Installation                                           *focus-installation*
+4. Installation                                      *focus.nvim-installation*
 
 Install the plugin with your preferred package manager:
 
@@ -96,7 +96,7 @@ LAZY.NVIM ~
 
 
 ==============================================================================
-5. Configuration                                         *focus-configuration*
+5. Configuration                                    *focus.nvim-configuration*
 
 FOCUS.nvim comes with the following defaults:
 
@@ -151,11 +151,13 @@ FOCUS.nvim comes with the following defaults:
 
 
 ==============================================================================
-6. Usage                                                         *focus-usage*
+6. Usage                                                    *focus.nvim-usage*
 
 - Toggle *FOCUS* mode with `:Focus`.
-- Toggle *NARROW* mode with `:'<,'>Narrow`. (e.g. by typing `:Narrow` after visual selecting lines)
-- Toggle *NARROW* and *FOCUS* mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after visual selecting lines)
+- Toggle *NARROW* mode with `:'<,'>Narrow`. (e.g. by typing `:Narrow` after visual
+  selecting lines)
+- Toggle *NARROW* and *FOCUS* mode with `:'<,'>Focus`. (e.g. by typing `:Focus` after
+  visual selecting lines)
 - Toggle *ZEN* mode with `:Zen`.
 
 Alternatively you can start any of *FOCUS*, *ZEN*, or *NARROW* mode with
