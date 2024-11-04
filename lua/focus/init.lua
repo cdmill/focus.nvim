@@ -40,10 +40,10 @@ M.toggle_zen = function(opts)
   end
 end
 
-function M.reset()
+function M.reset(opts)
   M.close()
   require("plenary.reload").reload_module("focus")
-  require("focus").toggle()
+  require("focus").toggle(opts)
 end
 
 return M

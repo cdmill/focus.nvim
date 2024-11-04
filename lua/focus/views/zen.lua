@@ -13,18 +13,16 @@ function M.is_active()
 end
 
 --- Disables plugins/opts when entering zen mode. Saves the state before disabling
---- to restore upon exiting zen mode
 function M.activate()
   for key, value in pairs(M.opts.zen.opts) do
     local opt = vim.fn.getwinvar(M.win, "&" .. key)
-    -- Annoying workaround for some global opts expecting different values when
+    -- Annoying workaround for some global opts expecting different types when
     -- enabling/disabling
-    M.state[key] = (
-      (type(opt) == "number" and type(M.opts.zen.opts[key]) ~= "number")
-        and (opt == 1 and true or false)
-      or opt
-    )
-
+    if type(opt) == "number" and type(M.opts.zen.opts[key]) ~= "number" then
+      M.state[key] = opt == 1 and true or opt == 0 and false
+    else
+      M.state[key] = opt
+    end
     vim.opt[key] = value
   end
   if M.opts.zen.diagnostics == false then
@@ -33,7 +31,7 @@ function M.activate()
   M.active = true
 end
 
---- Restores state to values before entering focus mode
+--- Restores state to values from before entering focus mode
 function M.deactivate()
   if not M.is_active() then
     return
