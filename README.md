@@ -85,7 +85,7 @@ FOCUS.nvim comes with the following defaults:
   window = {
     backdrop = 0.9, -- shade the backdrop of the focus window. Set to 1 to keep the same as Normal
     -- height and width can be:
-    -- * an asbolute number of cells when > 1
+    -- * an absolute number of cells when > 1
     -- * a percentage of the width / height of the editor when <= 1
     width = 120, -- width of the focus window
     height = 1, -- height of the focus window
@@ -104,7 +104,7 @@ FOCUS.nvim comes with the following defaults:
       relativenumber = false, -- disable relative numbers
       foldcolumn = "0", -- disable fold column
       signcolumn = "no", -- disable signcolumn
-      statuscolumn = " ", -- disbale status column
+      statuscolumn = " ", -- disable status column
     },
     diagnostics = false, -- disables diagnostics
   },
