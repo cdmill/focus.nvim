@@ -12,6 +12,7 @@ function M.can_toggle()
   return M.range.head ~= nil and M.range.tail ~= nil
 end
 
+---@private
 function M.on_open()
   M.state["opts"] = {
     foldenable = vim.o.foldenable,
@@ -24,6 +25,7 @@ function M.on_open()
   }
 end
 
+---@private
 function M.on_close()
   if not M.is_active() then
     return
@@ -37,12 +39,14 @@ function M.on_close()
   end
 end
 
+---@private
 function M.foldtext()
   return ""
 end
 
 --- If the starting or ending line of narrow is a fold, returns the line number of the
 --- first/last line in that fold. Otherwise, returns the original line number
+---@private
 ---@param line number
 ---@param mode string
 ---@return number
@@ -53,6 +57,7 @@ function M.normalize(line, mode)
   return (pline > 0 and pline or line)
 end
 
+---@private
 function M.focus(hd, tl)
   if hd and tl then
     M.range = { head = hd, tail = tl }
@@ -85,6 +90,7 @@ function M.focus(hd, tl)
   M.active = true
 end
 
+---@private
 function M.unfocus()
   if vim.wo.foldmethod == "manual" then
     vim.cmd("normal! zE")

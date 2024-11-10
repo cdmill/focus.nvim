@@ -9,7 +9,7 @@ M.bg_win = nil
 M.bg_buf = nil
 M.parent = nil
 M.win = nil
---- @type FocusOptions
+--- @type focus.Config
 M.opts = nil
 M.state = {}
 
@@ -20,6 +20,7 @@ end
 
 --- Disables plugins/opts when entering focus mode. Saves the state before disabling
 --- to restore upon exiting focus mode
+---@private
 function M.plugins_on_open()
   for name, opts in pairs(M.opts.plugins) do
     local plugin = plugins[name]
@@ -29,6 +30,7 @@ function M.plugins_on_open()
 end
 
 --- Restores state to values before entering focus mode
+---@private
 function M.plugins_on_close()
   for name, opts in pairs(M.opts.plugins) do
     if opts and opts.enabled then
@@ -103,16 +105,19 @@ function M.toggle(opts)
   end
 end
 
+---@private
 ---@param num number
 function M.round(num)
   return math.floor(num + 0.5)
 end
 
+---@private
 function M.height()
   local height = vim.o.lines - vim.o.cmdheight
   return (vim.o.laststatus == 3) and height - 1 or height
 end
 
+---@private
 ---@param max number
 ---@param value any
 ---@return number
@@ -129,7 +134,8 @@ function M.resolve(max, value)
 end
 
 --- Constructs focus mode layout
----@param opts FocusOptions
+---@private
+---@param opts focus.Config
 ---@return table
 function M.layout(opts)
   local width = M.resolve(vim.o.columns, opts.window.width)
@@ -143,6 +149,7 @@ function M.layout(opts)
   }
 end
 
+---@private
 ---@param win_resized? boolean
 function M.fix_layout(win_resized)
   if M.is_open() then
@@ -167,7 +174,8 @@ function M.fix_layout(win_resized)
   end
 end
 
----@param opts FocusOptions
+---@private
+---@param opts focus.Config
 function M.create(opts)
   opts = vim.tbl_deep_extend("force", {}, config.options, opts or {})
   config.colors(opts)
@@ -241,6 +249,7 @@ function M.create(opts)
   end
 end
 
+---@private
 ---@param win number
 ---@param backdrop? boolean
 function M.fix_hl(win, backdrop)
@@ -263,6 +272,7 @@ function M.fix_hl(win, backdrop)
   vim.api.nvim_set_current_win(cwin)
 end
 
+---@private
 ---@param win number
 ---@return boolean?
 function M.is_float(win)
@@ -270,6 +280,7 @@ function M.is_float(win)
   return opts and opts.relative and opts.relative ~= ""
 end
 
+---@private
 function M.on_buf_win_enter()
   if vim.api.nvim_get_current_win() == M.win then
     M.fix_hl(M.win)
@@ -280,6 +291,7 @@ function M.on_buf_win_enter()
   end
 end
 
+---@private
 function M.on_win_enter()
   local win = vim.api.nvim_get_current_win()
   if win ~= M.win and not M.is_float(win) then

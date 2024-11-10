@@ -1,22 +1,39 @@
 local util = require("focus.util")
 local M = {}
 
----@class FocusOptions
+---@class (exact) focus.WindowOpts
+---@field backdrop? number scale to shade the backdrop of the focus window. Set to 1 to keep the same as Normal
+---@field width? number the width of the focus window
+---@field height? number the height of the focus window
+---@field options? table vim.wo options to apply to focus window
+
+---@class (exact) focus.ZenOpts
+---@field opts? table vim.opt options to apply
+---@field diagnostics? boolean if false, disables diagnostics in zen mode
+
+---@class (exact) focus.Config
+---@field border? string border type for focus window
+---@field zindex? number zindex of the focus, should be less than 50
+---@field window? focus.WindowOpts options for focus window
+---@field auto_zen? boolean if true, auto enable zen mode when entering focus mode
+---@field zen? focus.ZenOpts options for zen mode
+---@field plugins? table plugins to disable/enable in focus mode
+---@field on_open? function callback when entering focus window
+---@field on_close? function callback when exiting focus window
 local defaults = {
   border = "none",
-  zindex = 40, -- zindex of the focus window. Should be less than 50, which is the float default
+  zindex = 40,
   window = {
-    backdrop = 0.9, -- shade the backdrop of the focus window. Set to 1 to keep the same as Normal
+    backdrop = 0.9,
     -- height and width can be:
     -- * an asbolute number of cells when > 1
     -- * a percentage of the width / height of the editor when <= 1
-    width = 120, -- width of the focus window
-    height = 1, -- height of the focus window
+    width = 120,
+    height = 1,
     -- by default, no options are changed in for the focus window
-    -- add any vim.wo options you want to apply
     options = {},
   },
-  auto_zen = false, -- auto enable zen mode when entering focus mode
+  auto_zen = false,
   -- by default, the options below are disabled for zen mode
   zen = {
     opts = {
@@ -43,13 +60,11 @@ local defaults = {
     -- diagnostics = { enabled = false }, -- disables diagnostics
     -- todo = { enabled = false }, -- if set to "true", todo-comments.nvim highlights will be disabled
   },
-  -- callback where you can add custom code when the focus window opens
   on_open = function(_win) end,
-  -- callback where you can add custom code when the focus window closes
   on_close = function() end,
 }
 
----@type FocusOptions
+---@type focus.Config
 M.options = nil
 
 function M.colors(options)

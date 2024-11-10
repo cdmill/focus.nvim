@@ -3,7 +3,7 @@ local plugins = require("focus.plugins")
 local M = {}
 
 M.win = nil
---- @type FocusOptions
+--- @type focus.Config
 M.opts = nil
 M.state = nil
 M.active = false
@@ -13,6 +13,7 @@ function M.is_active()
 end
 
 --- Disables plugins/opts when entering zen mode. Saves the state before disabling
+---@private
 function M.activate()
   for key, value in pairs(M.opts.zen.opts) do
     local opt = vim.fn.getwinvar(M.win, "&" .. key)
@@ -32,6 +33,7 @@ function M.activate()
 end
 
 --- Restores state to values from before entering focus mode
+---@private
 function M.deactivate()
   if not M.is_active() then
     return
@@ -47,6 +49,7 @@ function M.deactivate()
 end
 
 ---@param opts table options recieved from `nvim_create_user_command`
+---@private
 local function setup(opts)
   opts = vim.tbl_deep_extend("force", {}, config.options, opts or {})
   M.opts = opts
