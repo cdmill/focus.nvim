@@ -41,8 +41,6 @@ function M.plugins_on_close()
 end
 
 --- Closes focus mode and restores original state.
---- NOTE: we are also disabling zen and narrow modes when exiting focus mode but maybe
---- that decision should be left to the user---i.e. must explicitly exit narrow/zen mode
 function M.close()
   ---@diagnostic disable-next-line: param-type-mismatch
   pcall(vim.cmd, "autocmd! Focus")
@@ -72,12 +70,18 @@ function M.close()
   if M.opts then
     M.plugins_on_close()
     M.opts.on_close()
+
+    if M.opts.auto_disable_zen then
+      zen.deactivate()
+    end
+    if M.opts.auto_disable_narrow then
+      narrow.unfocus()
+    end
+
     M.opts = nil
     if M.parent and vim.api.nvim_win_is_valid(M.parent) then
       vim.api.nvim_set_current_win(M.parent)
     end
-    zen.deactivate()
-    narrow.unfocus()
   end
 end
 
