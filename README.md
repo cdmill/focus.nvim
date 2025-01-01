@@ -94,6 +94,8 @@ FOCUS.nvim comes with the following defaults:
     options = {},
   },
   auto_zen = false, -- auto enable zen mode when entering focus mode
+  auto_disable_zen = false, -- auto disable zen mode when exiting focus mode
+  auto_disable_narrow = false, -- auto disable zen mode when exiting focus mode
   -- by default, the options below are disabled for zen mode
   zen = {
     opts = {
