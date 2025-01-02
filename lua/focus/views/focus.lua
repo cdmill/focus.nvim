@@ -71,10 +71,10 @@ function M.close()
     M.plugins_on_close()
     M.opts.on_close()
 
-    if M.opts.auto_disable_zen then
+    if M.opts.auto_disable_zen and zen.is_active() then
       zen.deactivate()
     end
-    if M.opts.auto_disable_narrow then
+    if M.opts.auto_disable_narrow and narrow.is_active() then
       narrow.unfocus()
     end
 
@@ -187,7 +187,7 @@ function M.create(opts)
   M.state = {}
   M.parent = vim.api.nvim_get_current_win()
   M.plugins_on_open()
-  if opts.args == "zen" or opts.auto_zen then
+  if opts.args == "zen" or opts.auto_zen and not zen.is_active() then
     zen.toggle(opts)
   end
 
