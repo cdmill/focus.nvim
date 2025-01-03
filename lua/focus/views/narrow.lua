@@ -115,4 +115,11 @@ function M.toggle(opts)
   end
 end
 
+function M.refocus()
+  if not M.is_active() then
+    return
+  end
+  M.focus(M.range.head, M.range.tail)
+end
+
 return M

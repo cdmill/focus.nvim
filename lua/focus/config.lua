@@ -16,8 +16,8 @@ local M = {}
 ---@field zindex? number zindex of the focus, should be less than 50
 ---@field window? focus.WindowOpts options for focus window
 ---@field auto_zen? boolean if true, auto enable zen mode when entering focus mode
----@field auto_disable_zen? boolean if true, auto disable zen mode when exiting focus mode
----@field auto_disable_narrow? boolean if true, auto disable zen mode when exiting focus mode
+---@field maintain_zen? boolean if true, stay in zen mode when exiting focus mode
+---@field maintain_narrow? boolean if true, stay in narrow mode when exiting focus mode
 ---@field zen? focus.ZenOpts options for zen mode
 ---@field plugins? table plugins to disable/enable in focus mode
 ---@field on_open? function callback when entering focus window
@@ -36,8 +36,8 @@ local defaults = {
     options = {},
   },
   auto_zen = false,
-  auto_disable_zen = false,
-  auto_disable_narrow = false,
+  maintain_zen = false,
+  maintain_narrow = false,
   -- by default, the options below are disabled for zen mode
   zen = {
     opts = {
