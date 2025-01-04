@@ -3,7 +3,7 @@ local plugins = require("focus.plugins")
 local M = {}
 
 M.win = nil
---- @type focus.Config
+---@type focus.Config
 M.opts = nil
 M.state = nil
 M.active = false

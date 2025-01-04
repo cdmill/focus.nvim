@@ -107,6 +107,9 @@ function M.toggle(opts)
       M.close()
     end
   else
+    if config.options.auto_zen then
+      opts.args = "zen"
+    end
     M.open(opts)
   end
 end
@@ -189,7 +192,7 @@ function M.create(opts)
   M.state = {}
   M.parent = vim.api.nvim_get_current_win()
   M.plugins_on_open()
-  if opts.args == "zen" or opts.auto_zen and not zen.is_active() then
+  if opts.args == "zen" and not zen.is_active() then
     zen.toggle(opts)
   end
 

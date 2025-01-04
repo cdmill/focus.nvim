@@ -33,8 +33,8 @@ M.toggle_zen = function(opts)
       opts.line1 = narrow.range.head
       opts.line2 = narrow.range.tail
     end
-    focus.close()
-    focus.open(opts)
+    M.close()
+    M.open(opts)
   else
     zen.toggle(opts)
   end
