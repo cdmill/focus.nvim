@@ -79,7 +79,7 @@ function M.close()
     if M.parent and vim.api.nvim_win_is_valid(M.parent) then
       vim.api.nvim_set_current_win(M.parent)
     end
-    if maintain_narrow and narrow.is_active() then
+    if maintain_narrow or narrow.is_active() then
       narrow.refocus()
     else
       narrow.unfocus()
