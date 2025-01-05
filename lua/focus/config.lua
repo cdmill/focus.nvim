@@ -22,6 +22,7 @@ local M = {}
 ---@field plugins? table plugins to disable/enable in focus mode
 ---@field on_open? function callback when entering focus window
 ---@field on_close? function callback when exiting focus window
+---@field narrow_start_state? boolean whether focus mode was enabled while in narrow mode
 local defaults = {
   border = "none",
   zindex = 40,

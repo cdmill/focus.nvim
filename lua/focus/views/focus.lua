@@ -74,15 +74,16 @@ function M.close()
     if not M.opts.maintain_zen and zen.is_active() then
       zen.deactivate()
     end
-    local maintain_narrow = M.opts.maintain_narrow
-    M.opts = nil
-    if M.parent and vim.api.nvim_win_is_valid(M.parent) then
-      vim.api.nvim_set_current_win(M.parent)
-    end
-    if maintain_narrow or narrow.is_active() then
+
+    if (M.opts.maintain_narrow or M.opts.narrow_start_state) and narrow.is_active() then
       narrow.refocus()
     else
       narrow.unfocus()
+    end
+
+    M.opts = nil
+    if M.parent and vim.api.nvim_win_is_valid(M.parent) then
+      vim.api.nvim_set_current_win(M.parent)
     end
   end
 end
@@ -109,6 +110,9 @@ function M.toggle(opts)
   else
     if config.options.auto_zen then
       opts.args = "zen"
+    end
+    if narrow.is_active() then
+      opts.narrow_start_state = true
     end
     M.open(opts)
   end
