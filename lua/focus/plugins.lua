@@ -48,9 +48,9 @@ function M.tmux(state, disable, opts)
   end
   if disable then
     local function get_tmux_opt(option)
-      local option_raw = vim.fn.system([[tmux show -w ]] .. option)
+      local option_raw = vim.system({ "tmux", "show", "-w", option }, { text = true }):wait().stdout
       if option_raw == "" then
-        option_raw = vim.fn.system([[tmux show -g ]] .. option)
+        option_raw = vim.system({ "tmux", "show", "-g", option }, { text = true }):wait().stdout
       end
       local opt = vim.split(vim.trim(option_raw), " ")[2]
       return opt
@@ -58,17 +58,24 @@ function M.tmux(state, disable, opts)
     state.status = get_tmux_opt("status")
     state.pane = get_tmux_opt("pane-border-status")
 
-    vim.fn.system([[tmux set -w pane-border-status off]])
-    vim.fn.system([[tmux set status off]])
-    vim.fn.system([[tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
+    vim.system({ "tmux", "set", "-w", "pane-border-status", "off" }, {}, function() end)
+    vim.system({ "tmux", "set", "status", "off" }, {}, function() end)
+    vim.system({
+        "sh",
+        "-c",
+        "tmux list-panes -F '\\#F' | grep -q Z || tmux resize-pane -Z",
+    }, {}, function() end)
   else
     if type(state.pane) == "string" then
-      vim.fn.system(string.format([[tmux set -w pane-border-status %s]], state.pane))
+      vim.system({ "tmux", "set", "-w", "pane-border-status", state.pane }, {}, function() end)
     else
-      vim.fn.system([[tmux set -uw pane-border-status]])
+      vim.system({ "tmux", "set", "-uw", "pane-border-status" }, {}, function() end)
     end
-    vim.fn.system(string.format([[tmux set status %s]], state.status))
-    vim.fn.system([[tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]])
+    vim.system({ "tmux", "set", "status", state.status }, {}, function() end)
+    vim.system({
+      "sh", "-c",
+      "tmux list-panes -F '\\#F' | grep -q Z && tmux resize-pane -Z"
+    }, {}, function() end)
   end
 end
 
