@@ -77,11 +77,11 @@ function M.focus(hd, tl)
   vim.cmd("normal! zE")
 
   if head > 1 then
-    vim.cmd([[execute '1,' (]] .. head .. [[ - 1) 'fold']])
+    vim.cmd("execute '1,' (" .. head .. " - 1) 'fold'")
   end
 
   if tail < vim.fn.line("$") then
-    vim.cmd([[execute (]] .. tail .. [[ + 1) ',$' 'fold']])
+    vim.cmd("execute (" .. tail .. " + 1) ',$' 'fold'")
   end
 
   vim.wo.foldtext = "v:lua.require('focus.views.narrow').foldtext()"

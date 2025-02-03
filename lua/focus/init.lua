@@ -12,12 +12,7 @@ M.open = focus.open
 M.close = focus.close
 
 M.toggle_narrow = function(opts)
-  if
-    not focus.is_open()
-    and not narrow.can_toggle()
-    and opts.line1 == nil
-    and opts.line2 == nil
-  then
+  if not focus.is_open() and opts.line1 == nil and opts.line2 == nil then
     util.warn("Please provide a range to activate narrow focus")
   else
     narrow.toggle(opts)

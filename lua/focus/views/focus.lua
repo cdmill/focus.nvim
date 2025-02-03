@@ -5,13 +5,13 @@ local zen = require("focus.views.zen")
 local narrow = require("focus.views.narrow")
 local M = {}
 
+---@type focus.Config
+M.opts = nil
+M.state = {}
+M.win = nil
 M.bg_win = nil
 M.bg_buf = nil
 M.parent = nil
-M.win = nil
---- @type focus.Config
-M.opts = nil
-M.state = {}
 
 ---@return boolean
 function M.is_open()
@@ -67,6 +67,7 @@ function M.close()
     vim.api.nvim_buf_delete(M.bg_buf, { force = true })
     M.bg_buf = nil
   end
+
   if M.opts then
     M.plugins_on_close()
     M.opts.on_close()
